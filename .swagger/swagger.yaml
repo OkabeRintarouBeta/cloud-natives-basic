@@ -1,0 +1,211 @@
+basePath: /v1
+definitions:
+  book.DTO:
+    properties:
+      Author:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image_url:
+        type: string
+      published_date:
+        type: string
+      title:
+        type: string
+    type: object
+  book.Form:
+    properties:
+      author:
+        type: string
+      description:
+        type: string
+      image_url:
+        type: string
+      published_date:
+        type: string
+    type: object
+  err.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  err.Errors:
+    properties:
+      errors:
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: Dumindu Madunuwan
+    url: https://learning-cloud-native-go.github.io
+  description: This is a sample RESTful API with a CRUD
+  license:
+    name: MIT License
+    url: https://github.com/learning-cloud-native-go/myapp/blob/master/LICENSE
+  title: MYAPP API
+  version: "1.0"
+paths:
+  /../livez:
+    get:
+      description: Read health
+      responses:
+        "200":
+          description: OK
+      summary: Read health
+      tags:
+      - health
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: List books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/book.DTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: List books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Create book
+      parameters:
+      - description: Book form
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/book.Form'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/err.Errors'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Create book
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Delete book
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      description: Read book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/book.DTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Read book
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Update book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Book form
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/book.Form'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "404":
+          description: Not Found
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/err.Errors'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Update book
+      tags:
+      - books
+swagger: "2.0"
